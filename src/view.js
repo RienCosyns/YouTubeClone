@@ -29,8 +29,15 @@ class View {
   }
 
   renderVideoList(videos) {
+    if (document.getElementById("videoListDiv")) {
+      this.clearPage();
+      this.renderHome();
+    }
+
     var videoListDiv = document.createElement("div");
     var videoList = document.createElement("ul");
+    videoListDiv.setAttribute("id", "videoListDiv");
+    videoList.setAttribute("class", "list-group col-md-4");
 
     videos.forEach(video => {
       var videoListItem = document.createElement("li");
@@ -43,6 +50,7 @@ class View {
       var description = document.createElement("p");
 
       videoListItem.setAttribute("class", "list-group-item");
+      videoListItem.setAttribute("id", video.id.videoId);
       mediaContainer.setAttribute("class", "video-list media");
       mediaHead.setAttribute("class", "media-left");
       image.setAttribute("src", imageUrl);
@@ -65,7 +73,34 @@ class View {
     this.container.appendChild(videoListDiv);
   }
 
-  renderVideoDetail() {}
+  renderVideoDetail(videoId) {
+    if (document.getElementById("video-detail")) {
+      this.container.removeChild(document.getElementById("video-detail"));
+    }
+    const url = `https://www.youtube.com/embed/${videoId}`;
+    var videoDetail = document.createElement("div");
+    var videoHeader = document.createElement("div");
+    var videoBody = document.createElement("div");
+    var iframe = document.createElement("iframe");
+    var header = document.createElement("h3");
+    var description = document.createElement("p");
+
+    videoDetail.setAttribute("class", "video-detail col-md-8");
+    videoDetail.setAttribute("id", "video-detail");
+    videoHeader.setAttribute(
+      "class",
+      "embed-responsive embed-responsive-16by9"
+    );
+    iframe.setAttribute("class", "embed-responsive-item");
+    iframe.setAttribute("src", url);
+    videoBody.setAttribute("class", "details");
+
+    videoDetail.appendChild(videoHeader);
+    videoDetail.appendChild(videoBody);
+    videoHeader.appendChild(iframe);
+
+    this.container.appendChild(videoDetail);
+  }
 
   clearPage() {
     console.log("clearing page");
