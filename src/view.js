@@ -1,14 +1,10 @@
-class View {
-  constructor(container) {
-    this.container = container;
-  }
-
-  renderHome() {
+function view(container) {
+  
+  function renderHome() {
     var header = document.createElement("h1");
     var searchForm = document.createElement("form");
     var searchInput = document.createElement("input");
     var submitButton = document.createElement("button");
-
     searchForm.setAttribute("id", "searchForm");
     searchForm.setAttribute("onsubmit", "return false");
     searchInput.setAttribute("type", "text");
@@ -20,25 +16,20 @@ class View {
     submitButton.innerHTML = "Submit";
     submitButton.setAttribute("id", "submitButton");
     header.innerHTML = "Home";
-
     searchForm.appendChild(searchInput);
     searchForm.appendChild(submitButton);
-
     this.container.appendChild(header);
     this.container.appendChild(searchForm);
-  }
-
-  renderVideoList(videos) {
+  };
+  function renderVideoList(videos) {
     if (document.getElementById("videoListDiv")) {
       this.clearPage();
       this.renderHome();
     }
-
     var videoListDiv = document.createElement("div");
     var videoList = document.createElement("ul");
     videoListDiv.setAttribute("id", "videoListDiv");
     videoList.setAttribute("class", "list-group col-md-4");
-
     videos.forEach(video => {
       var videoListItem = document.createElement("li");
       var imageUrl = video.snippet.thumbnails.default.url;
@@ -48,7 +39,6 @@ class View {
       var image = document.createElement("img");
       var header = document.createElement("h3");
       var description = document.createElement("p");
-
       videoListItem.setAttribute("class", "list-group-item");
       videoListItem.setAttribute("id", video.id.videoId);
       mediaContainer.setAttribute("class", "video-list media");
@@ -59,21 +49,17 @@ class View {
       header.setAttribute("class", "media-heading");
       header.innerHTML = video.snippet.title;
       description.innerHTML = video.snippet.description;
-
       mediaHead.appendChild(image);
       mediaBody.appendChild(header);
       mediaBody.appendChild(description);
-
       videoListItem.appendChild(mediaHead);
       videoListItem.appendChild(mediaBody);
-
       videoList.appendChild(videoListItem);
     });
     videoListDiv.appendChild(videoList);
     this.container.appendChild(videoListDiv);
-  }
-
-  renderVideoDetail(videoId) {
+  };
+  function renderVideoDetail(videoId) {
     if (document.getElementById("video-detail")) {
       this.container.removeChild(document.getElementById("video-detail"));
     }
@@ -84,7 +70,6 @@ class View {
     var iframe = document.createElement("iframe");
     var header = document.createElement("h3");
     var description = document.createElement("p");
-
     videoDetail.setAttribute("class", "video-detail col-md-8");
     videoDetail.setAttribute("id", "video-detail");
     videoHeader.setAttribute(
@@ -94,22 +79,25 @@ class View {
     iframe.setAttribute("class", "embed-responsive-item");
     iframe.setAttribute("src", url);
     videoBody.setAttribute("class", "details");
-
     videoDetail.appendChild(videoHeader);
     videoDetail.appendChild(videoBody);
     videoHeader.appendChild(iframe);
-
     this.container.appendChild(videoDetail);
-  }
-
-  clearPage() {
+  };
+  function clearPage() {
     console.log("clearing page");
     var rootDiv = document.getElementById("root");
     console.log(rootDiv);
     while (rootDiv.firstChild) {
       rootDiv.removeChild(rootDiv.firstChild);
-    }
-  }
+    };
+  };
+  return {
+    container,
+    renderHome,
+    renderVideoList,
+    renderVideoDetail,
+    clearPage
+  };
 }
-
-module.exports = View;
+module.exports = view;
